@@ -1,2 +1,1 @@
-Замена стандартного label на собственный.
-![](label_demo.png)
+![](help_demo.png)
