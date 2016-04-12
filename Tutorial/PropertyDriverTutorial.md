@@ -14,20 +14,20 @@
 После создания скрипта откройте его в редакторе кода и удалите все что там есть.
 Далее вводим следующее:
 
-	/// <summary>
-	/// Label attribute - Атрибут позволяет заменить стандартный Label на собственную строку.
-	/// </summary>
-	public class LabelAttribute : PropertyAttribute
+```c#
+/// <summary>
+/// Label attribute - Атрибут позволяет заменить стандартный Label на собственную строку.
+/// </summary>
+public class LabelAttribute : PropertyAttribute
+{
+	public string Text;
+	public LabelAttribute(string text)
 	{
-		public string Text;
-		public LabelAttribute(string text)
-		{
-			this.Text = text;
-		}
+		this.Text = text;
 	}
-
-Теперь давайте разберем что в этом маленьком скрипте и за что отвечает.
-В тегах <summary> необязательное описание атрибута. Хотя опять-же - очень желательное, а то можно долго не пользоваться атрибутом и просто забыть для чего он был нужен  :ymsmug:
+}
+```
+Теперь давайте разберем что в этом маленьком скрипте и за что отвечает. В тегах `///<summary>` необязательное описание атрибута. Хотя опять-же - очень желательное, а то можно долго не пользоваться атрибутом и просто забыть для чего он был нужен
 
 ![](property/label_demo_summary.png)
 
@@ -39,42 +39,13 @@
 Название присвоим в соответствии с вышеназванным атрибутом, только в конце добавим уже слово "Drawer". И у нас должен получится скрипт с именем "LabelDrawer".
 Как и в при создании атрибута очищаем скрипт от всего кода и вписываем следующее:
 
-	using UnityEngine;
-	using UnityEditor;
+```c#
+using UnityEngine;
+using UnityEditor;
 
-	[CustomPropertyDrawer(typeof(LabelAttribute))]
-	public class LabelDrawer : PropertyDrawer
-	{
-		LabelAttribute labelAttribute
-		{
-			get
-			{
-				return (LabelAttribute) attribute;
-			}
-		}
-		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-		{
-
-			if (!string.IsNullOrEmpty(labelAttribute.Text))
-			{
-				EditorGUI.PropertyField(position, property, labelAttribute.Text);
-			}
-					else	EditorGUI.PropertyField(position, property, label);
-		}
-	}
-
-Как вы наверное заметили у нас добавилась дополнительная директива
-
-	using UnityEditor; 
-	
-Она отвечает за все элементы интерфейса инспектора (и многое еще за что).
-Далее перед определением класса у нас идет атрибут 
-
-	[CustomPropertyDrawer(typeof(LabelAttribute))] 
-	
-который используется для получения типа объекта нашего атрибута и назначения его в качестве атрибута CustomPropertyDrawer уже нашему новому классу (надеюсь сформулировал правильно  :-  ну не селен я объяснять высшие материи в пару строк...).
-Затем следует объявление самого класса LabelDrawer унаследованного в отличии от LabelAttribute уже от PropertyDrawer.
-
+[CustomPropertyDrawer(typeof(LabelAttribute))]
+public class LabelDrawer : PropertyDrawer
+{
 	LabelAttribute labelAttribute
 	{
 		get
@@ -82,6 +53,43 @@
 			return (LabelAttribute) attribute;
 		}
 	}
+	public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+	{
+
+		if (!string.IsNullOrEmpty(labelAttribute.Text))
+		{
+			EditorGUI.PropertyField(position, property, labelAttribute.Text);
+		}
+				else	EditorGUI.PropertyField(position, property, label);
+	}
+}
+```
+
+Как вы наверное заметили у нас добавилась дополнительная директива
+
+```c#
+using UnityEditor; 
+```
+
+Она отвечает за все элементы интерфейса инспектора (и многое еще за что).
+Далее перед определением класса у нас идет атрибут 
+
+```c#
+[CustomPropertyDrawer(typeof(LabelAttribute))]
+```
+	
+который используется для получения типа объекта нашего атрибута и назначения его в качестве атрибута CustomPropertyDrawer уже нашему новому классу (надеюсь сформулировал правильно  :-  ну не селен я объяснять высшие материи в пару строк...).
+Затем следует объявление самого класса LabelDrawer унаследованного в отличии от LabelAttribute уже от PropertyDrawer.
+
+```c#
+LabelAttribute labelAttribute
+{
+	get
+	{
+		return (LabelAttribute) attribute;
+	}
+}
+```
 	
 Данный кусок кода отвечает за получение ссылки на экземпляр атрибута LabelAttribute и присвоение этой ссылки переменной labelAttribute.
 А далее метод отрисовки нового Gui взамен стандартного, где мы мошенническим образом и подменяем наш Label.
