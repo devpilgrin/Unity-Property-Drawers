@@ -98,8 +98,8 @@
 	
 В редакторе GUI создаем поле PropertyField с параметрами полученными из параметров метода OnGUI и последним параметром отвечающим собственно за Label, который мы возьмем по ссылке из LabelAttribute.
 При этом PropertyField принимает следующие параметры:
-position - расположение поля относительно окна инспектора, задается в виде класса http://docs.unity3d.com/Documentation/ScriptReference/Rect.html]Rect .
-property - сериализируемые параметры объекта предназначенные для редактирования в упрощенном виде.
+position - расположение поля относительно окна инспектора, задается в виде класса http://docs.unity3d.com/Documentation/ScriptReference/Rect.html
+Rect.property - сериализируемые параметры объекта предназначенные для редактирования в упрощенном виде.
 label - Собственно наш Label который мы и меняем.
 
 	else	EditorGUI.PropertyField(position, property, label);
